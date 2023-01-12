@@ -55,7 +55,6 @@ def get_column_from_table(column, table, matchcol, matchval, fetch_one = True):
     else:
         return cur.fetchall()
 
-# ..
 
 
 if __name__ == "__main__":
