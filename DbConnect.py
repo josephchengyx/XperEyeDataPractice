@@ -1,5 +1,6 @@
 import mysql.connector
 import pandas as pd
+import math
 import xmltodict
 import dict2xml
 import matplotlib.pyplot as plt
@@ -20,6 +21,18 @@ def create_server_connection(host_name, user_name, user_password):
     return connection
 
 
+def mm2pixel(width, height, pixel_width, pixel_height, df):
+    hunit = width / pixel_width;
+    vunit = height / pixel_height;
+    df['x']= df['x']/hunit;
+    df['y']= df['y']/vunit;
+    return df
+
+def deg2mm(deg, distance):
+    mm = math.tan((deg / 2) * (math.pi / 180.0)) * 2.0 * distance;
+    return mm
+
+
 
 
 
@@ -31,18 +44,12 @@ if __name__ == "__main__":
     cur = connection.cursor()
     cur.execute("SELECT msg FROM jkDev.BehMsgEye WHERE type = %(type)s", {'type': "EyeDeviceMessage"})
     eye_dev_msgs = cur.fetchall()
-    cur.execute("SELECT msg FROM jkDev.BehMsgEye WHERE type = %(type)s", {'type': "EyeZeroMessage"})
-    eye_zero_msgs = cur.fetchall()
-
-
-
 
     device_msg_list = []
     for x in eye_dev_msgs:
         eye_dev = xmltodict.parse(x[0])
         print(eye_dev)
         device_msg_list.append(eye_dev['EyeDeviceMessage'])
-
 
 
     # TODO: CURRENT METHOD IGNORES RIGHTISCAN VS LEFTISCAN
@@ -53,8 +60,8 @@ if __name__ == "__main__":
     distance = 525
     for i in range(len(device_msg_list)):
         # TODO: read the distance from database
-        x_mm = UnitConverter.deg2mm(float(device_msg_list[i]['degree']['x']), distance)
-        y_mm = UnitConverter.deg2mm(float(device_msg_list[i]['degree']['y']), distance)
+        x_mm = deg2mm(float(device_msg_list[i]['degree']['x']), distance)
+        y_mm = deg2mm(float(device_msg_list[i]['degree']['y']), distance)
 
         x_pos.append(x_mm)
         y_pos.append(y_mm)
@@ -66,7 +73,7 @@ if __name__ == "__main__":
         'y': y_pos
     })
 
-    print(df)
+    #print(df)
     #plt.scatter(x_pos,y_pos)
     im = plt.imread("2.JPG")
 
@@ -77,8 +84,8 @@ if __name__ == "__main__":
     screen_width_mm = 1440
     screen_height_mm = 816
 
-    new_df = UnitConverter.mm2pixel(screen_width_mm, screen_height_mm, pixel_width, pixel_height, df)
-    print(new_df)
+    new_df = mm2pixel(screen_width_mm, screen_height_mm, pixel_width, pixel_height, df)
+    #print(new_df)
 
     plt.imshow(im, extent=[-im.shape[1] / 2., im.shape[1] / 2., -im.shape[0] / 2., im.shape[0] / 2.])
     plt.scatter(df['x'],df['y'], linestyle='-', marker='.')
