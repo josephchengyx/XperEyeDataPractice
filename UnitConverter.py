@@ -1,38 +1,30 @@
-from DbConnect import create_server_connection
+import math
+import pandas as pd
 
+def mm2pixel(width, height, pixel_width, pixel_height, df):
+    hunit = width / pixel_width;
+    vunit = height / pixel_height;
+    df['x']= df['x']/hunit;
+    df['y']= df['y']/vunit;
+    return df
 
-host = "localhost"
-user = "xper_rw"
-pw = "up2nite"
-connection = create_server_connection(host, user, pw)
-cur = connection.cursor()
-def get_col_from_table(col, table, matchcol, matchval, just_one = True):
-    sql = f'SELECT {col} FROM {table} WHERE {matchcol} = %({matchcol})s'
-    cur.execute(sql, {matchcol: matchval})
-    if just_one == 'one':
-        row = cur.fetchone()
-        return row and row[0]
-    else:
-        return cur.fetchall()
+def deg2mm(deg, distance):
+    mm = math.tan((deg / 2) * (math.pi / 180.0)) * 2.0 * distance;
+    return mm
 
-screen_height_mm = get_col_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')
-dev_msgs = get_col_from_table('msg', 'jkDev.BehMsgEye', 'type', 'EyeDeviceMessage', just_one = False)
-#
-#
-# query = ("SELECT val FROM jkDev.SystemVar "
-#          "WHERE name = %(name)s")
-# name = {'name': "xper_monkey_screen_height"}
-# cur.execute(query, name)
-# screen_height_mm = int(cur.fetchone()[0])
-# # cur.execute("SELECT val FROM jkDev.SystemVar WHERE name = %(name)s", {'name': "xper_monkey_screen_height"})
-# # screen_height_mm = int(cur.fetchone()[0])
-# cur.execute("SELECT val FROM jkDev.SystemVar WHERE name = %(name)s", {'name': "xper_monkey_screen_width"})
-# screen_width_mm = int(cur.fetchone()[0])
-# cur.execute("SELECT val FROM jkDev.SystemVar WHERE name = %(name)s", {'name': "xper_monkey_screen_distance"})
-# screen_distance_mm = int(cur.fetchone()[0])
-#
-# print(screen_distance_mm)
-# print(screen_width_mm)
-# print(screen_height_mm)
-#
-#
+def deg2mm_coord_xy(coord_list, distance):
+
+    x_pos = []
+    y_pos = []
+    for line in coord_list:
+        x_mm = deg2mm(float(line['x']), distance)
+        y_mm = deg2mm(float(line['y']), distance)
+        x_pos.append(x_mm)
+        y_pos.append(y_mm)
+
+    eye_pos_df = pd.DataFrame({
+        'x': x_pos,
+        'y': y_pos
+    })
+
+    return eye_pos_df
