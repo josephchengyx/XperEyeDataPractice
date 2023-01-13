@@ -53,11 +53,6 @@ if __name__ == "__main__":
         #print(eye_dev)
         device_msg_list.append(eye_dev['EyeDeviceMessage'])
 
-    # TODO: get time that slide is on and slide is off
-    experiment_start_times = get_column_from_table(connection, 'tstamp','jkDev.BehMsg','type','ExperimentStart', fetch_one = False)
-
-    slide_on_times = get_column_from_table(connection, 'tstamp','jkDev.BehMsg','type','SlideOn', fetch_one = False)
-    slide_off_times = get_column_from_table(connection, 'tstamp','jkDev.BehMsg','type','SlideOff', fetch_one = False)
     # TODO: get the corresponding taskid
     # TODO: get the corresponding image
 
