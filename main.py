@@ -76,6 +76,10 @@ if __name__ == "__main__":
     eye_data = extract_eye_data(eye_dev_msgs)
 
 
+
+    print(eye_data.loc[eye_data['id'] == 'leftIscan'])
+
+
     # left_eye_deg = []
     # right_eye_deg = []
     # for l in device_msg_list:
