@@ -2,18 +2,9 @@ import xmltodict
 from matplotlib import pyplot as plt
 import pandas as pd
 
-from DBUtil import create_server_connection, get_column_from_table
+from DBUtil import create_server_connection, get_column_from_table, get_rows_from_table
 from UnitConverter import deg2mm_coord_xy, mm2pixel
 
-
-def get_rows_from_table(cnx, colnames, table):
-    sql = f'SELECT {colnames} FROM {table}'
-
-    cur = cnx.cursor()
-    cur.execute(sql)
-    df = pd.DataFrame(cur.fetchall())
-    df.columns = [x.strip() for x in colnames.split(',')]
-    return df
 
 def extract_slide_events(events):
     slide_msg = pd.DataFrame()
