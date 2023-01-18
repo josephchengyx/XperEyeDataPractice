@@ -23,6 +23,7 @@ class TaskInfo(DatabaseTrialField):
 
         df = pd.DataFrame(slide_msg_list)
         '''------------------COMMON---------------------'''
+        pd.set_option('display.width', 400)
         pd.set_option('display.max_columns', None)
 
         '''
@@ -38,7 +39,8 @@ class TaskInfo(DatabaseTrialField):
                 print('done')
 
         a = pd.pivot_table(a,index = ['taskId','slideFileName'], values = 'timestamp',columns = ['frameCount']).astype(int)
-
+        a = a.reset_index().rename(columns={'-1': 'slideOn', '0': 'slideOff'})
+        print(a)
         return None
 
 if __name__ == "__main__":

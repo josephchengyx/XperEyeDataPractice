@@ -35,5 +35,6 @@ if __name__ == "__main__":
 
     a = RawEyeData()
     left,right = a.get()
+    print(left)
 
 
