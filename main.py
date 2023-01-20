@@ -2,9 +2,9 @@ import xmltodict
 from matplotlib import pyplot as plt
 import pandas as pd
 
-from DBUtil import create_server_connection, get_column_from_table, get_rows_from_table
 from RawEyeData import RawEyeData
 from RawSlideData import RawSlideData
+from SystemVar import SystemVar
 from UnitConverter import deg2mm_coord_xy, mm2pixel
 
 
@@ -24,13 +24,17 @@ def extract_eye_data(eye_dev_msgs):
 
 if __name__ == "__main__":
 
+    sys_var = SystemVar()
 
     left_eye_data, right_eye_data = RawEyeData().get()
     slide_data = RawSlideData().get()
 
-    # screen_distance_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_distance')
-    # screen_height_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')
-    # screen_width_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_width')
+    screen_distance_mm = sys_var.get("xper_monkey_screen_distance")
+    print(screen_distance_mm)
+
+    # screen_distance_mm = connection.get_column_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_distance')
+    # screen_height_mm = connection.get_column_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')
+    # screen_width_mm = connection.get_column_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_width')
 
     # left_eye_mm = deg2mm_coord_xy(left_eye_deg, screen_distance_mm)
     # right_eye_mm = deg2mm_coord_xy(right_eye_deg, screen_distance_mm)

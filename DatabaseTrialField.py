@@ -16,7 +16,8 @@ class DatabaseTrialField:
         df.columns = [x.strip() for x in colnames.split(',')]
         return df
 
-    def parse_msgs_into_df(self, msgs, xml_tag):
+    @staticmethod
+    def parse_msgs_into_df(msgs, xml_tag):
         msg_list = []
         for msg in msgs:
             temp = xmltodict.parse(msg)[xml_tag]

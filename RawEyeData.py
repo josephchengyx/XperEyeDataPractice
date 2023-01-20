@@ -20,7 +20,8 @@ class RawEyeData(DatabaseTrialField):
 
         pd.set_option('display.width', 400)
         pd.set_option('display.max_columns', None)
-        eye_msg_df = super().parse_msgs_into_df(eye_device_msgs, 'EyeDeviceMessage')
+        xml_tag = 'EyeDeviceMessage'
+        eye_msg_df = super().parse_msgs_into_df(eye_device_msgs, xml_tag)
         eye_msg_df = eye_msg_df.drop(columns=['volt'])
 
         '''
