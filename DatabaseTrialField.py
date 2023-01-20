@@ -26,3 +26,15 @@ class DatabaseTrialField:
 
         return df
 
+    def get_value_from_matching_entry(self, column, table, matchcol, matchval):
+        sql = f'SELECT {column} FROM {table} WHERE {matchcol} = %({matchcol})s'
+        self.cur.execute(sql, {matchcol: matchval})
+        row = self.cur.fetchone()
+
+        return int(row[0])
+
+    def get_connection(self):
+        return self.connection
+
+    def get_cursor(self):
+        return self.cur

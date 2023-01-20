@@ -24,12 +24,14 @@ def extract_eye_data(eye_dev_msgs):
 
 if __name__ == "__main__":
 
+
     left_eye_data_degrees, right_eye_data_degrees = RawEyeDataDegrees().get()
     slide_data = RawSlideData().get()
+    print(type(slide_data))
 
-    # screen_distance_mm = get_column_from_table(connection, 'val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_distance')
-    # screen_height_mm = get_column_from_table(connection, 'val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')
-    # screen_width_mm = get_column_from_table(connection, 'val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_width')
+    # screen_distance_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_distance')
+    # screen_height_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')
+    # screen_width_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_width')
 
     # left_eye_mm = deg2mm_coord_xy(left_eye_deg, screen_distance_mm)
     # right_eye_mm = deg2mm_coord_xy(right_eye_deg, screen_distance_mm)
