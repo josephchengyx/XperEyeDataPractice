@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import pandas as pd
 
 from DBUtil import create_server_connection, get_column_from_table, get_rows_from_table
-from RawEyeDataDegrees import RawEyeDataDegrees
+from RawEyeData import RawEyeData
 from RawSlideData import RawSlideData
 from UnitConverter import deg2mm_coord_xy, mm2pixel
 
@@ -25,9 +25,8 @@ def extract_eye_data(eye_dev_msgs):
 if __name__ == "__main__":
 
 
-    left_eye_data_degrees, right_eye_data_degrees = RawEyeDataDegrees().get()
+    left_eye_data, right_eye_data = RawEyeData().get()
     slide_data = RawSlideData().get()
-    print(type(slide_data))
 
     # screen_distance_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_distance')
     # screen_height_mm = get_value_from_matching_entry('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')

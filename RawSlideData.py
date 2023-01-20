@@ -38,8 +38,8 @@ class RawSlideData(DatabaseTrialField):
 
         s = SlideData()
         s.set_time(list(zip(slide_data.slideOn, slide_data.slideOff)))
-        s.set_task_id(slide_data['taskId'])
-        s.set_image_path(slide_data['slideFileName'])
+        s.set_task_id(list(slide_data['taskId']))
+        s.set_image_path(list(slide_data['slideFileName']))
 
         return s
 
@@ -53,6 +53,6 @@ if __name__ == "__main__":
     print(slide.get_time())
     print(slide.get_task_id())
     print(slide.get_image_path())
-    print(type(slide.get_image_path()))
-    print(type(slide.get_task_id()))
-    print(type(slide.get_time()))
+    # print(type(slide.get_image_path()))
+    # print(type(slide.get_task_id()))
+    # print(type(slide.get_time()))

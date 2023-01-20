@@ -1,10 +1,14 @@
+from typing import Union
+
 import pandas as pd
 import xmltodict
+from pandas import Series, DataFrame
 
 from DatabaseTrialField import DatabaseTrialField
+from EyeData import EyeData
 
 
-class RawEyeDataDegrees(DatabaseTrialField):
+class RawEyeData(DatabaseTrialField):
 
     def __init__(self):
         super().__init__()
@@ -24,11 +28,17 @@ class RawEyeDataDegrees(DatabaseTrialField):
         '''
         eye_msg_df = pd.concat([eye_msg_df, pd.DataFrame((d for idx, d in eye_msg_df['degree'].items()))], axis=1)
         del eye_msg_df['degree']
-        left_eye_data = eye_msg_df[eye_msg_df["id"] == 'leftIscan'].reset_index(drop=True)
-        right_eye_data = eye_msg_df[eye_msg_df["id"] == 'rightIscan'].reset_index(drop=True)
+        leftIscan_data = eye_msg_df[eye_msg_df["id"] == 'leftIscan'].reset_index(drop=True)
+        rightIscan_data = eye_msg_df[eye_msg_df["id"] == 'rightIscan'].reset_index(drop=True)
 
-        return left_eye_data, right_eye_data
+        left_eye = EyeData()
+        left_eye.set_eye("Left")
+        left_eye.set_unit("degrees")
+        left_eye.set_coordinates(list(zip(leftIscan_data.x, leftIscan_data.y)))
 
+        right_eye = EyeData()
+        right_eye.set_eye("Right")
+        right_eye.set_unit("degrees")
+        right_eye.set_coordinates(list(zip(rightIscan_data.x, rightIscan_data.y)))
 
-
-
+        return left_eye, right_eye
