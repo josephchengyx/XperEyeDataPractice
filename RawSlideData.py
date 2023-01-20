@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 from DatabaseTrialField import DatabaseTrialField
+from SlideData import SlideData
 
 
 class RawSlideData(DatabaseTrialField):
@@ -34,7 +35,13 @@ class RawSlideData(DatabaseTrialField):
         slide_data = pd.pivot_table(slide_data,index = ['taskId','slideFileName'], values = 'timestamp',columns = ['frameCount']).astype(int)
         slide_data = slide_data.reset_index().rename(columns={'-1': 'slideOn', '0': 'slideOff'})
         print(slide_data)
-        return slide_data
+
+        s = SlideData()
+        s.set_time(list(zip(slide_data.slideOn, slide_data.slideOff)))
+        s.set_task_id(slide_data['taskId'])
+        s.set_image_path(slide_data['slideFileName'])
+
+        return s
 
 if __name__ == "__main__":
     # x = DatabaseTrialField()
@@ -42,4 +49,10 @@ if __name__ == "__main__":
     # print(msg)
 
     y = RawSlideData()
-    events = y.get()
+    slide = y.get()
+    print(slide.get_time())
+    print(slide.get_task_id())
+    print(slide.get_image_path())
+    print(type(slide.get_image_path()))
+    print(type(slide.get_task_id()))
+    print(type(slide.get_time()))

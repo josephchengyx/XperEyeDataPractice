@@ -1,34 +1,32 @@
 class EyeData:
 
-    def __init__(self, taskId, eye, x, y):
-        self.taskId = taskId
-        self.eye = eye
-        self.x = x
-        self.y = y
+    def __init__(self):
+        self.task_id = None
+        self.eye = None
+        self.coordinates = None
+        self.unit = None
 
-
-    # Getters and Setters
     def get_eye(self):
         return self.eye
+
+    def get_task_id(self, task_id):
+        return self.task_id
+
+    def get_coordinates(self):
+        return self.coordinates
+
+    def get_unit(self):
+        return self.unit
 
     def set_eye(self, eye):
         self.eye = eye
 
-    def set_taskId(self, taskId):
-        self.taskId = taskId
+    def set_task_id(self, task_id):
+        self.task_id = task_id
 
-    def get_taskId(self,taskId):
-        return taskId
+    def set_coordinates(self, coordinates):
+        self.coordinates = coordinates
 
-    def set_x(self, x):
-        self.x = x
-
-    def get_x(self):
-        return self.x
-
-    def set_y(self,y):
-        self.y = y
-
-    def get_y(self):
-        return self.y
+    def set_unit(self, unit):
+        self.unit = unit
 
