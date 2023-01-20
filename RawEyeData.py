@@ -36,6 +36,7 @@ class RawEyeData(DatabaseTrialField):
         left_eye.set_eye("Left")
         left_eye.set_unit("degrees")
         left_eye.set_coordinates(list(zip(leftIscan_data.x, leftIscan_data.y)))
+        left_eye.set_coordinates(tuple(map(float, left_eye.get_coordinates())))
 
         right_eye = EyeData()
         right_eye.set_eye("Right")

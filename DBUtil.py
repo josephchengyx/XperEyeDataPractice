@@ -4,7 +4,6 @@ import pandas as pd
 
 class DBConnection:
     def __init__(self, host_name, user_name, user_password):
-        self.cursor = None
         self.host_name = host_name
         self.user_name = user_name
         self.user_password = user_password
@@ -15,6 +14,7 @@ class DBConnection:
                 user=user_name,
                 passwd=user_password
             )
+            self.cursor = self.connection.cursor()
             print("MySQL Database Connection Successful!")
         except ConnectionError as err:
             print(f"Error:" '{err}'"")
@@ -28,7 +28,7 @@ class DBConnection:
     def get_column_from_table(self,column, table, matchcol, matchval):
         sql = f'SELECT {column} FROM {table} WHERE {matchcol} = %({matchcol})s'
         self.cursor.execute(sql, {matchcol: matchval})
-        row = self.cursorfetchone()
+        row = self.cursor.fetchone()
 
         return int(row[0])
 
