@@ -26,5 +26,3 @@ class DatabaseTrialField:
 
         return df
 
-    def get_columns(self):
-        pass

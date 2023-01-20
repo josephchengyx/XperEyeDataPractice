@@ -29,11 +29,6 @@ class RawEyeDataDegrees(DatabaseTrialField):
 
         return left_eye_data, right_eye_data
 
-if __name__ == "__main__":
 
-    a = RawEyeDataDegrees()
-    left, right = a.get()
-    print(left)
-    print(right)
 
 
