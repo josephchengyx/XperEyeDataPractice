@@ -1,17 +1,55 @@
-# This is a sample Python script.
+import xmltodict
+from matplotlib import pyplot as plt
+import pandas as pd
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from DBUtil import DBConnection
+from RawEyeData import RawEyeData
+from RawSlideData import RawSlideData
+from SystemVar import SystemVar
+from UnitConverter import deg2mm_coord_xy, mm2pixel
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+
+def extract_eye_data(eye_dev_msgs):
+
+    eye_data = pd.DataFrame()
+    for x in eye_dev_msgs:
+        eye_dev = xmltodict.parse(x[0])
+        #print(eye_dev)
+        temp = pd.DataFrame.from_dict(eye_dev['EyeDeviceMessage'])
+        eye_data = pd.concat([eye_data, temp])
+
+    return eye_data
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
 
+    connection = DBConnection("localhost", "xper_rw", "up2nite")
+
+    left_eye_data, right_eye_data = RawEyeData().get()
+    slide_data = RawSlideData().get()
+
+    screen_distance_mm = connection.get_column_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_distance')
+    screen_height_mm = connection.get_column_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_height')
+    screen_width_mm = connection.get_column_from_table('val', 'jkDev.SystemVar', 'name', 'xper_monkey_screen_width')
+
+
+    # left_eye_mm = deg2mm_coord_xy(left_eye_data.get_coordinates(), screen_distance_mm)
+    # right_eye_mm = deg2mm_coord_xy(right_eye_deg, screen_distance_mm)
+
+
+    # TODO: CHANGE MM TO PIXEL
+    # im = plt.imread("2.JPG")
+    # pixel_width = im.shape[0]
+    # pixel_height = im.shape[1]
+    #
+    # left_eye_mm = mm2pixel(1016, 572, 3840, 2160, left_eye_mm)
+    # #right_eye_mm = mm2pixel(76, 114, pixel_width, pixel_height, right_eye_mm)
+    #
+    # plt.imshow(im, extent=[-im.shape[1] / 2., im.shape[1] / 2., -im.shape[0] / 2., im.shape[0] / 2.])
+    # plt.scatter(left_eye_mm['x'],left_eye_mm['y'], linestyle='-', marker='.', c = 'red')
+    # plt.scatter(right_eye_mm['x'],right_eye_mm['y'], linestyle='-', marker='.', c = 'blue')
+    # plt.show()
+
+    # connection.close()
