@@ -3,6 +3,7 @@ class EyeData:
     def __init__(self):
         self.eye = None
         self.coordinates = None
+        self.time = None
         self.unit = None
 
     def get_eye(self):
@@ -10,6 +11,9 @@ class EyeData:
 
     def get_coordinates(self):
         return self.coordinates
+
+    def get_time(self):
+        return self.time
 
     def get_unit(self):
         return self.unit
@@ -20,6 +24,8 @@ class EyeData:
     def set_coordinates(self, coordinates):
         self.coordinates = coordinates
 
+    def set_time(self, time):
+        self.time = time
+
     def set_unit(self, unit):
         self.unit = unit
-

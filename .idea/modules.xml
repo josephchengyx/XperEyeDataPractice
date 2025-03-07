@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Julie/.idea/Julie.iml" filepath="$PROJECT_DIR$/../Julie/.idea/Julie.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/XperMockEyeDataPractice.iml" filepath="$PROJECT_DIR$/.idea/XperMockEyeDataPractice.iml" />
     </modules>
   </component>

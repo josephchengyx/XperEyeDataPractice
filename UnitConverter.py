@@ -2,14 +2,14 @@ import math
 import pandas as pd
 
 def mm2pixel(width, height, pixel_width, pixel_height, df):
-    hunit = width / pixel_width;
-    vunit = height / pixel_height;
-    df['x']= df['x']/hunit;
-    df['y']= df['y']/vunit;
+    hunit = width / pixel_width
+    vunit = height / pixel_height
+    df['x']= df['x']/hunit
+    df['y']= df['y']/vunit
     return df
 
 def deg2mm(deg, distance):
-    mm = math.tan((deg / 2) * (math.pi / 180.0)) * 2.0 * distance;
+    mm = math.tan((deg / 2) * (math.pi / 180.0)) * 2.0 * distance
     return mm
 
 def deg2mm_coord_xy(coord_list, distance):

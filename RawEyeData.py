@@ -1,7 +1,8 @@
 from typing import Union
 
-import pandas as pd
 import xmltodict
+import pandas as pd
+import numpy as np
 from pandas import Series, DataFrame
 
 from DatabaseTrialField import DatabaseTrialField
@@ -13,8 +14,8 @@ class RawEyeData(DatabaseTrialField):
     def __init__(self):
         super().__init__()
 
-    def get(self):
-        beh_msg_eye = super().get_rows('type, msg', 'jkDev.BehMsgEye')
+    def get(self, db_name):
+        beh_msg_eye = super().get_rows('type, msg', f'{db_name}.BehMsgEye')
         eye_device_msgs = beh_msg_eye[beh_msg_eye['type'].str.contains("EyeDeviceMessage")].reset_index(drop=True)
         eye_device_msgs = eye_device_msgs['msg']
 
@@ -35,12 +36,13 @@ class RawEyeData(DatabaseTrialField):
         left_eye = EyeData()
         left_eye.set_eye("Left")
         left_eye.set_unit("degrees")
-        left_eye.set_coordinates(list(zip(leftIscan_data.x, leftIscan_data.y)))
-        left_eye.set_coordinates(tuple(map(float, left_eye.get_coordinates())))
+        left_eye.set_coordinates(np.array(list(zip(map(float, leftIscan_data['x']), map(float, leftIscan_data['y'])))))
+        left_eye.set_time(pd.to_numeric(leftIscan_data['timestamp']).to_numpy())
 
         right_eye = EyeData()
         right_eye.set_eye("Right")
         right_eye.set_unit("degrees")
-        right_eye.set_coordinates(list(zip(rightIscan_data.x, rightIscan_data.y)))
+        right_eye.set_coordinates(np.array(list(zip(map(float, rightIscan_data['x']), map(float, rightIscan_data['y'])))))
+        right_eye.set_time(pd.to_numeric(rightIscan_data['timestamp']).to_numpy())
 
         return left_eye, right_eye

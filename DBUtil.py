@@ -25,12 +25,16 @@ class DBConnection:
     def set_cursor(self, cursor):
         self.cursor = cursor
 
-    def get_column_from_table(self,column, table, matchcol, matchval):
+    def get_column_from_table(self, column, table, matchcol, matchval, fmt=None):
         sql = f'SELECT {column} FROM {table} WHERE {matchcol} = %({matchcol})s'
         self.cursor.execute(sql, {matchcol: matchval})
-        row = self.cursor.fetchone()
-
-        return int(row[0])
+        fetch_result = list(map(lambda x: x[0], self.cursor.fetchall()))
+        if fmt is not None:
+            fetch_result = list(map(fmt, fetch_result))
+        if len(fetch_result) == 1:
+            return fetch_result[0]
+        else:
+            return fetch_result
 
 
 
@@ -52,7 +56,7 @@ def create_server_connection(host_name, user_name, user_password):
 def get_rows_from_table(cnx, colnames, table):
     sql = f'SELECT {colnames} FROM {table}'
 
-    cur = cnx.cursor()
+    cur = cnx.get_cursor()
     cur.execute(sql)
     df = pd.DataFrame(cur.fetchall())
     df.columns = [x.strip() for x in colnames.split(',')]

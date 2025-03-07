@@ -6,7 +6,8 @@ import pandas as pd
 class DatabaseTrialField:
 
     def __init__(self):
-        self.connection = create_server_connection("localhost", "xper_rw", "up2nite")
+        # self.connection = create_server_connection("localhost", "xper_rw", "up2nite")
+        self.connection = create_server_connection("localhost", "root", "Whedon101")
         self.cur = self.connection.cursor()
 
     def get_rows(self, colnames, table):
@@ -20,7 +21,7 @@ class DatabaseTrialField:
     def parse_msgs_into_df(msgs, xml_tag):
         msg_list = []
         for msg in msgs:
-            temp = xmltodict.parse(msg)[xml_tag]
+            temp = xmltodict.parse(msg).get(xml_tag)
             msg_list.append(temp)
 
         df = pd.DataFrame(msg_list)
